@@ -4,12 +4,13 @@ using System.Text;
 using System.Linq;
 using Chinook.Report.Marketing.Models;
 using Chinook.Contracts.Report.Marketing;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Chinook.Report
 {
 	public class MarketingReports
 	{
-		public static IEnumerable<Contracts.Report.Marketing.IArtistStatistic> GetArtistStatistics()
+		public static IEnumerable<IArtistStatistic> GetArtistStatistics()
 		{
 			var albums = Logic.Factory.GetAllAlbums();
 			var artists = Logic.Factory.GetAllArtists();
@@ -63,6 +64,29 @@ namespace Chinook.Report
 
 			return albumStatistic;
 
+		}
+
+
+		public static ICustomerSaleStatistic GetCustomerSaleStatistics()
+		{
+			var invoices = Logic.Factory.GetAllInvoices();
+			var costumers = Logic.Factory.GetAllCustomers();
+
+			var customerSaleStatistic = new CustomerSaleStatistic();
+
+			var item = (from i in invoices
+						join c in costumers on i.Id equals c.Id
+						group i by c.LastName)
+						  .Select(j => (j.Key, j.Sum(a => a.Total)))
+						  .OrderBy(a => a.Item2);
+
+			customerSaleStatistic.maxName = item.Last().Key;
+			customerSaleStatistic.maxNumber = item.Last().Item2.ToString();
+			customerSaleStatistic.minName = item.First().Key;
+			customerSaleStatistic.minNumber = item.First().Item2.ToString();
+			customerSaleStatistic.avgNumber = item.Average(k => k.Item2).ToString();
+
+			return customerSaleStatistic;
 		}
 	}
 }

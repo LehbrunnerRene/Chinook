@@ -28,5 +28,24 @@ namespace Chinook.Logic
 
 			return result;
 		}
+		
+		public static IEnumerable<Contracts.Persistence.IInvoice> GetAllInvoices()
+		{
+			var result = CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Invoice>();
+
+			return result;
+		}
+		
+		public static IEnumerable<Contracts.Persistence.ICustomer> GetAllCustomers()
+		{
+			var result = CsvMapper.Logic.CsvHelper.Read<Models.Persistence.Customer>();
+
+			return result;
+		}
+		
+
+
+
+		
 	}
 }

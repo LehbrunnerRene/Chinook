@@ -24,6 +24,11 @@ namespace Chinook.ConApp
 			Console.WriteLine($"Min Time: {albumStatistic.MinTime}");
 			Console.WriteLine($"Average Time: {albumStatistic.AverageTime}");
 
+			var customerSaleStatistic = Report.MarketingReports.GetCustomerSaleStatistics();
+			Console.WriteLine("\nCustomer Sale Statistic");
+			Console.WriteLine($"Max Number: {customerSaleStatistic.maxNumber}");
+			Console.WriteLine($"Min Number: {customerSaleStatistic.minNumber}");
+			Console.WriteLine($"Average Time: {customerSaleStatistic.avgNumber}");
 
 		}
 	}
